@@ -38,10 +38,11 @@ size_t	eol_detector(char *buffer)
 	size_t	i;
 
 	i = 0;
-	while (buffer[i++])
+	while (buffer[i])
 	{
 		if (buffer[i] == '\n')
 			return (0);
+		i++;
 	}
 	return (1);
 }
@@ -100,7 +101,7 @@ char	*get_next_line(int fd)
 	if (buffer[0] == 0)
 	{
 		res = get_buffer(fd, buffer);
-		res = ft_snip(buffer);
+		//res = ft_snip(buffer);
 		printf("%s", res);
 	}
 	else
