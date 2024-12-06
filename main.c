@@ -12,16 +12,14 @@ int main(void)
 {
 	int fd;
 	char *line;
-
+	int i = 0;
 	fd = open("test.txt", O_RDONLY);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	// get_next_line(fd);
-	// get_next_line(fd);
+	while (i++ < 8)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		free(line);
+	}
+
 	return (0);
 }

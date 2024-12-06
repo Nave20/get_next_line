@@ -48,9 +48,11 @@ char	*get_buffer(int fd, char *buffer, ssize_t *stop)
 {
 	size_t		stop2;
 	char		*res;
+	void		*ptr;
 
 	stop2 = 1;
 	res = malloc(0);
+	ptr = &res;
 	while (*stop && stop2)
 	{
 		*stop = read(fd, buffer, BUFFER_SIZE);
@@ -63,6 +65,7 @@ char	*get_buffer(int fd, char *buffer, ssize_t *stop)
 		if (!res)
 			return (NULL);
 	}
+	free(ptr);
 	return (res);
 }
 
@@ -89,13 +92,19 @@ char	*get_next_line(int fd)
 	ssize_t			stop;
 	char			*temp2;
 	static char		buffer[BUFFER_SIZE + 1] = "\0";
+	void			*ptr;
 
 	stop = 1;
 	if (buffer[0] == 0)
 	{
 		res = get_buffer(fd, buffer, &stop);
 		if (res[ft_strlen(res) - 1] != '\n')
+		{
+			ptr = &res;
 			res = ft_snip(res);
+			free(ptr);
+		}
+
 	}
 	else
 	{
