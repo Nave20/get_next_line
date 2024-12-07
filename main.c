@@ -11,7 +11,7 @@ int main(void)
 	while (i++ < 8)
 	{
 		line = get_next_line(fd);
-		printf("%s", line);
+		printf("line number %i : %s",i, line);
 		free(line);
 	}
 	return (0);

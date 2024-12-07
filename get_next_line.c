@@ -39,7 +39,7 @@ size_t	eol_detector(char *buffer)
 	i = 0;
 	while (buffer[i])
 	{
-		if (buffer[i] == '\n')
+		if (buffer[i] == '\n' || buffer[i] == 0)
 			return (0);
 		i++;
 	}
@@ -88,7 +88,9 @@ char	*gnl_core(int fd, char *buffer, ssize_t *stop)
 		free(temp);
 	}
 	if (*stop < BUFFER_SIZE)
+	{
 		ft_strlcpy(buffer, res, BUFFER_SIZE);
+	}
 	res = ft_snip(res);
 	return (res);
 }
@@ -107,10 +109,8 @@ char	*get_next_line(int fd)
 		res = get_buffer(fd, buffer, &stop);
 		if (!res)
 			return (NULL);
-		if (res[ft_strlen(res) - 1] != '\n')
-		{
+		if (res[ft_strlen(res) - 1] == '\n' || stop < BUFFER_SIZE)
 			res = ft_snip(res);
-		}
 	}
 	else
 	{
