@@ -39,8 +39,10 @@ size_t	eol_detector(char *buffer)
 	i = 0;
 	while (buffer[i])
 	{
-		if (buffer[i] == '\n' || buffer[i] == 0)
-			return (0);
+		if (buffer[i] == '\n')
+		{
+				return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -77,7 +79,7 @@ char	*gnl_core(int fd, char *buffer, ssize_t *stop)
 	res = get_buffer_nl(buffer);
 	if (!res)
 		return (NULL);
-	if (eol_detector(res) != 0)
+	if (eol_detector(res) != 0 && *stop == BUFFER_SIZE)
 	{
 		temp = get_buffer(fd, buffer, stop);
 		if (!temp)
@@ -88,9 +90,8 @@ char	*gnl_core(int fd, char *buffer, ssize_t *stop)
 		free(temp);
 	}
 	if (*stop < BUFFER_SIZE)
-	{
 		ft_strlcpy(buffer, res, BUFFER_SIZE);
-	}
+	// if (eol_detector(res) != -1)
 	res = ft_snip(res);
 	return (res);
 }
@@ -113,8 +114,11 @@ char	*get_next_line(int fd)
 			res = ft_snip(res);
 	}
 	else
-	{
 		res = gnl_core(fd, buffer, &stop);
+	if (res[0] == 0)
+	{
+		free(res);
+		return (NULL);
 	}
 	return (res);
 }
