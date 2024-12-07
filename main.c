@@ -2,12 +2,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int	ft_putstr_fd(char *s, int fd)
-{
-	if (s == NULL)
-		return ((int) write(fd, "(null)", 6));
-	return ((int) write(fd, s, ft_strlen(s)));
-}
 int main(void)
 {
 	int fd;
@@ -20,6 +14,5 @@ int main(void)
 		printf("%s", line);
 		free(line);
 	}
-
 	return (0);
 }

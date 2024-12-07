@@ -22,8 +22,9 @@
 
 char	*get_next_line(int fd);
 char	*get_buffer(int fd, char *buffer, ssize_t *stop);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char const *s2);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_substr(char *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *str);
+char	*ft_snip(char *buffer);
 #endif

@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		i++;
@@ -40,7 +42,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	return (ft_strlen(src));
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -61,10 +63,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	res[j - 1] = '\0';
+	free(s1);
 	return (res);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*res;
 	size_t	i;
@@ -78,7 +81,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = ft_strlen(s) - i;
 	res = (char *) malloc ((len + 1) * sizeof (char));
 	if (!res)
-		return (res);
+		return (NULL);
 	while (j < len)
 	{
 		res[j] = s[i];
@@ -86,5 +89,20 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		j++;
 	}
 	res[j] = '\0';
+	return (res);
+}
+
+char	*ft_snip(char *buffer)
+{
+	char	*res;
+	char	*ptr;
+	size_t	i;
+
+	i = 0;
+	while (buffer[i] != '\n' && buffer[i] != '\0')
+		i++;
+	ptr = buffer;
+	res = ft_substr(buffer, 0, i + 1);
+	free(ptr);
 	return (res);
 }
