@@ -13,23 +13,16 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-char	*get_buffer_nl(char *buffer)
+char	*get_buffer_nl(char *buffer, size_t eol)
 {
-	char	*res;
-	size_t	i;
+	char	*temp;
+	size_t	len;
 
-	i = -1;
-	while (buffer[++i])
-	{
-		if (buffer[i] == '\n')
-		{
-			break ;
-		}
-	}
-	res = ft_substr(buffer, i + 1, ft_strlen(buffer));
-	if (!res)
-		return (NULL);
-	return (res);
+	len = ft_strlen(&buffer[eol]);
+	temp = malloc (eol);
+	ft_strlcpy(temp, buffer, eol);
+	ft_strlcpy(buffer, &buffer[eol - 1], len + 2);
+	return (temp);
 }
 
 size_t	eol_detector(const char *buffer)
@@ -41,58 +34,65 @@ size_t	eol_detector(const char *buffer)
 	{
 		if (buffer[i] == '\n')
 		{
-				return (0);
+				return (i + 2);
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 char	*get_buffer(int fd, char *buffer, ssize_t *stop)
 {
-	size_t		stop2;
 	char		*res;
+	size_t		eol;
+	char		*temp;
 
-	stop2 = 1;
+	eol = 0;
 	res = NULL;
-	while (*stop && stop2)
+	while (*stop == BUFFER_SIZE && eol == 0)
 	{
 		*stop = read(fd, buffer, BUFFER_SIZE);
 		if (*stop == -1)
 			return (NULL);
-		if (*stop == 0)
-			break ;
 		buffer[*stop] = 0;
-		stop2 = eol_detector(buffer);
-		res = ft_strjoin(res, buffer);
-		if (!res)
-			return (NULL);
+		eol = eol_detector(buffer);
+		if (eol != 0)
+		{
+			res = ft_strjoin(res, temp = get_buffer_nl(buffer, eol));
+			free(temp);
+		}
+		else
+			res = ft_strjoin(res, buffer);
 	}
 	return (res);
 }
 
 char	*gnl_core(int fd, char *buffer, ssize_t *stop)
 {
-	char	*res;
 	char	*temp;
+	char	*ptr;
+	char	*res;
 
-	res = get_buffer_nl(buffer);
-	if (!res)
+	temp = ft_strdup(buffer);
+	if (!temp)
 		return (NULL);
-	if (eol_detector(res) != 0 && *stop == BUFFER_SIZE)
+	if (eol_detector(temp) != 0)
 	{
-		temp = get_buffer(fd, buffer, stop);
-		if (!temp)
-			return (free(res), NULL);
-		res = ft_strjoin(res, temp);
+		res = get_buffer_nl(buffer, eol_detector(temp));
 		if (!res)
-			return (free(temp), free(res), NULL);
+			return (NULL);
 		free(temp);
 	}
-	if (*stop < BUFFER_SIZE)
-		ft_strlcpy(buffer, res, BUFFER_SIZE);
-	// if (eol_detector(res) != -1)
-	res = ft_snip(res);
+	else
+	{
+		ptr = get_buffer(fd, buffer, stop);
+		if (!ptr)
+			return (NULL);
+		res = ft_strjoin(temp, ptr);
+		if (!res)
+			return (NULL);
+		free (ptr);
+	}
 	return (res);
 }
 
@@ -102,19 +102,17 @@ char	*get_next_line(int fd)
 	ssize_t			stop;
 	static char		buffer[BUFFER_SIZE + 1] = "\0";
 
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stop = 1;
-	if (buffer[0] == 0)
-	{
+	stop = BUFFER_SIZE;
+	res = NULL;
+	if (buffer[0] == 0 || BUFFER_SIZE == 1)
 		res = get_buffer(fd, buffer, &stop);
-		if (!res)
-			return (NULL);
-		if (res[ft_strlen(res) - 1] == '\n' || stop < BUFFER_SIZE)
-			res = ft_snip(res);
-	}
 	else
 		res = gnl_core(fd, buffer, &stop);
+	if (!res)
+		return (NULL);
 	if (res[0] == 0)
 	{
 		free(res);

@@ -67,42 +67,21 @@ char	*ft_strjoin(char *s1, char const *s2)
 	return (res);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_strdup(const char *src)
 {
 	char	*res;
-	size_t	i;
-	size_t	j;
+	size_t	index;
 
-	i = 0;
-	j = 0;
-	while (i != start && s[i])
-		i++;
-	if (len > ft_strlen(s) - i)
-		len = ft_strlen(s) - i;
-	res = (char *) malloc ((len + 1) * sizeof (char));
-	if (!res)
+	index = 0;
+	res = (char *) malloc ((ft_strlen(src) + 1) * sizeof (char));
+	if (res == NULL)
 		return (NULL);
-	while (j < len)
+	while (src[index])
 	{
-		res[j] = s[i];
-		i++;
-		j++;
+		res[index] = src[index];
+		index++;
 	}
-	res[j] = '\0';
+	res[index] = '\0';
 	return (res);
 }
 
-char	*ft_snip(char *buffer)
-{
-	char	*res;
-	char	*ptr;
-	size_t	i;
-
-	i = 0;
-	while (buffer[i] != '\n' && buffer[i] != '\0')
-		i++;
-	ptr = buffer;
-	res = ft_substr(buffer, 0, i + 1);
-	free(ptr);
-	return (res);
-}

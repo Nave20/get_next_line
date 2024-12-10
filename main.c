@@ -14,5 +14,6 @@ int main(void)
 		printf("line number %i : %s",i, line);
 		free(line);
 	}
+
 	return (0);
 }
