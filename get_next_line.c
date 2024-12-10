@@ -32,7 +32,7 @@ char	*get_buffer_nl(char *buffer)
 	return (res);
 }
 
-size_t	eol_detector(char *buffer)
+size_t	eol_detector(const char *buffer)
 {
 	size_t	i;
 
