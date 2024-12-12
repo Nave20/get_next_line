@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vpirotti <vpirotti@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/29 13:59:56 by vpirotti          #+#    #+#             */
-/*   Updated: 2024/11/29 14:02:41 by vpirotti         ###   ########.fr       */
+/*   Created: 2024/12/12 12:51:53 by vpirotti          #+#    #+#             */
+/*   Updated: 2024/12/12 14:36:12 by vpirotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h>
 
 char	*get_buffer_nl(char *buffer, size_t eol)
@@ -105,13 +105,13 @@ char	*get_next_line(int fd)
 {
 	char			*res;
 	ssize_t			stop;
-	static char		buffer[BUFFER_SIZE + 1] = "\0";
+	static char		buffer[fd][BUFFER_SIZE + 1] = '\0';
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stop = BUFFER_SIZE;
 	res = NULL;
-	if (buffer[0] == 0 || BUFFER_SIZE == 1)
+	if (buffer[fd][0] == 0 || BUFFER_SIZE == 1)
 		res = get_buffer(fd, buffer, &stop);
 	else
 		res = gnl_core(fd, buffer, &stop);

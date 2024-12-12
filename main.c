@@ -8,7 +8,7 @@ int main(void)
 	char *line;
 	int i = 0;
 	fd = open("test.txt", O_RDONLY);
-	while (i++ < 8)
+	while (i++ < 100183)
 	{
 		line = get_next_line(fd);
 		printf("line number %i : %s",i, line);
