@@ -105,16 +105,16 @@ char	*get_next_line(int fd)
 {
 	char			*res;
 	ssize_t			stop;
-	static char		buffer[fd][BUFFER_SIZE + 1] = '\0';
+	static char		buffer[OPEN_MAX][BUFFER_SIZE + 1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stop = BUFFER_SIZE;
 	res = NULL;
 	if (buffer[fd][0] == 0 || BUFFER_SIZE == 1)
-		res = get_buffer(fd, buffer, &stop);
+		res = get_buffer(fd, buffer[fd], &stop);
 	else
-		res = gnl_core(fd, buffer, &stop);
+		res = gnl_core(fd, buffer[fd], &stop);
 	if (!res)
 		return (NULL);
 	if (res[0] == 0)
