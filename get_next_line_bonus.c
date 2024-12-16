@@ -95,7 +95,7 @@ char	*gnl_core(int fd, char *buffer, ssize_t *stop)
 			return (free(temp), NULL);
 		res = ft_strjoin(temp, ptr);
 		if (!res)
-			return (free(temp), free(ptr), NULL);
+			return (free(ptr), NULL);
 		free (ptr);
 	}
 	return (res);
