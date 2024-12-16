@@ -126,6 +126,5 @@ char	*get_next_line(int fd)
 		free(res);
 		return (NULL);
 	}
-	printf("%s", res);
 	return (res);
 }
