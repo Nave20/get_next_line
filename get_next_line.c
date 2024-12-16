@@ -112,9 +112,13 @@ char	*get_next_line(int fd)
 	stop = BUFFER_SIZE;
 	res = NULL;
 	if (buffer[0] == 0 || BUFFER_SIZE == 1)
+	{
 		res = get_buffer(fd, buffer, &stop);
+	}
 	else
+	{
 		res = gnl_core(fd, buffer, &stop);
+	}
 	if (!res)
 		return (NULL);
 	if (res[0] == 0)

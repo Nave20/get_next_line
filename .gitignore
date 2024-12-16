@@ -6,3 +6,5 @@ cmake-build-debug
 libftTester
 tester
 *.a
+main.c
+test.txt

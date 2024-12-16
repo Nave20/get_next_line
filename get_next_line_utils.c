@@ -54,7 +54,7 @@ char	*ft_strjoin(char *s1, char const *s2)
 	i = 0;
 	res = (char *) malloc ((j + len) * sizeof(char));
 	if (!res)
-		return (NULL);
+		return (free (s1), NULL);
 	ft_strlcpy(res, s1, j);
 	while (i < len)
 	{
